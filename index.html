@@ -1,0 +1,481 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>RADiate Morning Co.</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Anton&family=Archivo:wght@400..600&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --cream: #faf6f0;
+      --espresso: #24160f;
+      --coffee: #6b3e26;
+      --crema: #c99662;
+      --caramel: #d08a45;
+      --giant: #ece1d3;
+      --u: min(calc(100vw / 1440), calc(100vh / 960));
+      --ph: 0;
+      --edge-px: 100vh;
+    }
+    @media (max-width: 767px), (orientation: portrait) {
+      :root { --u: min(calc(100vw / 430), 1.4px); }
+    }
+
+    html, body { margin: 0; background: var(--cream); overflow-x: clip; }
+    body { font-family: "Archivo", system-ui, sans-serif; color: var(--espresso); }
+
+    .track { position: relative; background: var(--cream); }
+
+    /* Nav: scrolls away with the top of the page */
+    .nav {
+      position: absolute; top: 0; left: 0; right: 0; z-index: 10;
+      display: flex; justify-content: space-between; align-items: center;
+      padding: calc(26 * var(--u));
+    }
+    .brand { font-weight: 600; font-size: calc(30 * var(--u)); letter-spacing: -.06em; }
+    .nav-r {
+      display: flex; align-items: center; gap: calc(28 * var(--u));
+      font-weight: 500; font-size: calc(10 * var(--u));
+      text-transform: uppercase; letter-spacing: .1em;
+    }
+    .nav-r a { color: inherit; text-decoration: none; }
+    .outline-pill {
+      border: 1px solid currentColor; border-radius: 999px;
+      padding: calc(9 * var(--u)) calc(18 * var(--u));
+    }
+
+    /* Sticky scene */
+    .scene {
+      position: sticky; top: 0;
+      height: 100vh; height: 100lvh;
+      overflow: hidden; background: var(--cream);
+    }
+
+    /* Espresso band rises from the bottom */
+    .band {
+      position: absolute; left: 0; right: 0; top: var(--edge-px); bottom: 0;
+      background: var(--espresso); color: var(--cream); z-index: 1;
+    }
+
+    /* Giant letters slide behind the cup */
+    .giant {
+      position: absolute; left: 0; top: var(--edge-px); z-index: 2;
+      font-family: "Anton", sans-serif; font-size: calc(330 * var(--u));
+      line-height: .8; color: var(--giant); white-space: nowrap;
+      text-transform: uppercase; pointer-events: none;
+      transform: translate(100vw, -100%); will-change: transform;
+    }
+
+    /* The coffee cup */
+    .cup {
+      position: absolute; left: 50%; top: 0; z-index: 3;
+      width: calc(360 * var(--u)); aspect-ratio: 300 / 260;
+      transform-origin: 50% 100%; will-change: transform;
+    }
+    .cup svg { display: block; width: 100%; height: 100%; overflow: visible; }
+    .steam path {
+      fill: none; stroke: var(--crema); stroke-width: 6; stroke-linecap: round;
+      animation: steam 3s ease-in-out infinite;
+    }
+    .steam path:nth-child(2) { animation-delay: 1s; }
+    .steam path:nth-child(3) { animation-delay: 2s; }
+    @keyframes steam {
+      0%   { opacity: 0; transform: translateY(10px); }
+      40%  { opacity: .9; }
+      100% { opacity: 0; transform: translateY(-40px); }
+    }
+
+    /* Strip in the band, slides left */
+    .strip {
+      position: absolute; left: 0; top: calc(76 * var(--u));
+      display: flex; gap: calc(120 * var(--u)); width: max-content;
+      transform: translateX(100vw); will-change: transform;
+    }
+    .lead { display: flex; gap: calc(64 * var(--u)); align-items: flex-start; }
+    .lead h2 {
+      margin: 0; font-family: "Anton", sans-serif; font-weight: 400;
+      font-size: calc(64 * var(--u)); line-height: .98;
+      text-transform: uppercase; white-space: nowrap;
+    }
+    .lead h2 .c { color: var(--caramel); }
+    .lead .copy {
+      width: calc(250 * var(--u)); font-size: calc(12 * var(--u));
+      line-height: 1.5; color: rgba(250, 246, 240, .62);
+    }
+    .lead .copy p { margin: 0 0 1em; }
+
+    .cards { display: flex; }
+    .card {
+      --s: -40%;
+      box-sizing: border-box; width: calc(270 * var(--u));
+      padding: 0 calc(30 * var(--u));
+      border-left: 1px solid rgba(250, 246, 240, .12);
+    }
+    .card:first-child { border-left: 0; }
+    .card svg {
+      width: calc(38 * var(--u)); height: calc(38 * var(--u));
+      fill: none; stroke: var(--cream); stroke-width: 1.5;
+      stroke-linecap: round; stroke-linejoin: round;
+      margin-bottom: calc(22 * var(--u));
+    }
+    .card h3, .card p {
+      background: linear-gradient(90deg,
+        var(--cream) calc(var(--s) - 34%),
+        var(--caramel) calc(var(--s) - 6%),
+        transparent calc(var(--s) + 26%));
+      -webkit-background-clip: text; background-clip: text;
+      color: transparent;
+    }
+    .card h3 {
+      margin: 0 0 calc(14 * var(--u));
+      font-family: "Anton", sans-serif; font-weight: 400;
+      font-size: calc(26 * var(--u)); line-height: 1; text-transform: uppercase;
+    }
+    .card p { margin: 0; font-size: calc(12.4 * var(--u)); line-height: 1.5; }
+
+    .band-pill {
+      position: absolute; left: 50%; bottom: calc(36 * var(--u));
+      transform: translate(-50%, calc((1 - var(--ph)) * 24px));
+      opacity: var(--ph); transition: opacity .5s, transform .5s;
+      border: 1px solid rgba(250, 246, 240, .6); border-radius: 999px;
+      padding: calc(9 * var(--u)) calc(18 * var(--u));
+      font-weight: 500; font-size: calc(10 * var(--u));
+      text-transform: uppercase; letter-spacing: .1em; white-space: nowrap;
+    }
+
+    /* ---------- About section ---------- */
+    .about {
+      position: relative; background: var(--cream);
+      padding: calc(140 * var(--u)) calc(80 * var(--u)) calc(160 * var(--u));
+    }
+    .about-top {
+      display: grid; grid-template-columns: 1.2fr 1fr;
+      gap: calc(100 * var(--u)); align-items: start;
+    }
+    .eyebrow {
+      display: flex; align-items: center; gap: calc(14 * var(--u));
+      margin: 0 0 calc(28 * var(--u));
+      font-weight: 500; font-size: max(11px, calc(11 * var(--u)));
+      text-transform: uppercase; letter-spacing: .14em; color: var(--caramel);
+    }
+    .eyebrow::before { content: ""; width: calc(40 * var(--u)); height: 1px; background: currentColor; }
+    .about h2 {
+      margin: 0; font-family: "Anton", sans-serif; font-weight: 400;
+      font-size: calc(96 * var(--u)); line-height: .95; text-transform: uppercase;
+    }
+    .about h2 .c { color: var(--caramel); }
+    .about-copy { padding-top: calc(56 * var(--u)); }
+    .about-copy p {
+      margin: 0 0 1.2em; max-width: calc(460 * var(--u));
+      font-size: max(15px, calc(17 * var(--u))); line-height: 1.65;
+      color: rgba(36, 22, 15, .75);
+    }
+    .badge {
+      width: calc(170 * var(--u)); height: calc(170 * var(--u));
+      margin-top: calc(36 * var(--u));
+    }
+    .badge .ring { transform-origin: 100px 100px; animation: spin 28s linear infinite; }
+    .badge text {
+      font-family: "Archivo", sans-serif; font-weight: 600; font-size: 13px;
+      letter-spacing: .18em; fill: var(--espresso);
+    }
+    @keyframes spin { to { transform: rotate(360deg); } }
+
+    .rituals {
+      display: grid; grid-template-columns: repeat(4, 1fr);
+      margin-top: calc(120 * var(--u));
+      border-top: 1px solid rgba(36, 22, 15, .15);
+    }
+    .ritual {
+      padding: calc(36 * var(--u)) calc(28 * var(--u)) 0;
+      border-left: 1px solid rgba(36, 22, 15, .15);
+    }
+    .ritual:first-child { border-left: 0; padding-left: 0; }
+    .ritual .num {
+      font-weight: 500; font-size: max(11px, calc(12 * var(--u)));
+      letter-spacing: .12em; color: var(--caramel);
+    }
+    .ritual h3 {
+      margin: calc(12 * var(--u)) 0 calc(10 * var(--u));
+      font-family: "Anton", sans-serif; font-weight: 400;
+      font-size: calc(40 * var(--u)); line-height: 1; text-transform: uppercase;
+    }
+    .ritual p {
+      margin: 0; font-size: max(14px, calc(15 * var(--u))); line-height: 1.55;
+      color: rgba(36, 22, 15, .7);
+    }
+    .about-cta {
+      display: inline-block; margin-top: calc(80 * var(--u));
+      background: var(--espresso); color: var(--cream); text-decoration: none;
+      border-radius: 999px; padding: calc(16 * var(--u)) calc(30 * var(--u));
+      font-weight: 500; font-size: max(11px, calc(12 * var(--u)));
+      text-transform: uppercase; letter-spacing: .1em;
+      transition: background .3s;
+    }
+    .about-cta:hover { background: var(--coffee); }
+
+    /* Fade-up on scroll into view */
+    .reveal { opacity: 0; transform: translateY(28px); transition: opacity .9s ease, transform .9s ease; }
+    .reveal.in { opacity: 1; transform: none; }
+
+    @media (max-width: 767px), (orientation: portrait) {
+      .about { padding: calc(80 * var(--u)) 22px calc(100 * var(--u)); }
+      .about-top { grid-template-columns: 1fr; gap: 0; }
+      .about h2 { font-size: calc(54 * var(--u)); }
+      .about-copy { padding-top: calc(32 * var(--u)); }
+      .about-copy p { max-width: none; }
+      .badge { width: calc(130 * var(--u)); height: calc(130 * var(--u)); }
+      .rituals { grid-template-columns: 1fr 1fr; margin-top: calc(64 * var(--u)); border-top: 0; column-gap: 20px; }
+      .ritual, .ritual:first-child {
+        border-left: 0; padding: calc(24 * var(--u)) 0 calc(8 * var(--u));
+        border-top: 1px solid rgba(36, 22, 15, .15);
+      }
+      .ritual h3 { font-size: calc(34 * var(--u)); }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      .badge .ring { animation: none; }
+      .reveal { transform: none; transition: opacity .4s; }
+    }
+
+    /* Phones and portrait screens */
+    @media (max-width: 767px), (orientation: portrait) {
+      .nav .follow { display: none; }
+      .giant { font-size: calc(180 * var(--u)); }
+      .cup { width: calc(240 * var(--u)); }
+      .strip { top: calc(44 * var(--u)); gap: calc(56 * var(--u)); padding-left: 22px; }
+      .lead { flex-direction: column; gap: calc(20 * var(--u)); }
+      .lead h2 { font-size: calc(46 * var(--u)); }
+      .lead .copy { width: calc(300 * var(--u)); font-size: calc(13 * var(--u)); }
+      .card { width: calc(250 * var(--u)); }
+      .card p { font-size: calc(13 * var(--u)); }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      .steam path { animation: none; opacity: .7; }
+    }
+  </style>
+</head>
+<body>
+  <div class="track" id="track">
+    <nav class="nav">
+      <div class="brand">RADiate</div>
+      <div class="nav-r">
+        <a href="#">→ Menu</a>
+        <a href="#" class="follow">Follow</a>
+        <a href="#" class="outline-pill">Work with us</a>
+      </div>
+    </nav>
+
+    <div class="scene" id="scene">
+      <div class="band">
+        <div class="strip" id="strip">
+          <div class="lead">
+            <h2>Welcome to<br>RADiate<br><span class="c">Morning Co.</span></h2>
+            <div class="copy">
+              <p>Coffee, surf, camp, and reel.</p>
+              <p>Built for good company.</p>
+            </div>
+          </div>
+
+          <div class="cards">
+            <article class="card">
+              <svg viewBox="0 0 38 38" aria-hidden="true"><path d="M7 16h20v8a8 8 0 0 1-8 8h-4a8 8 0 0 1-8-8z"/><path d="M27 18h3a4 4 0 0 1 0 8h-3"/><path d="M13 6c-2 2 2 4 0 6M19 6c-2 2 2 4 0 6"/></svg>
+              <h3>Morning<br>coffee</h3>
+              <p>Coffee, poured first thing.</p>
+            </article>
+            <article class="card">
+              <svg viewBox="0 0 38 38" aria-hidden="true"><path d="M24 4c6 6 4 18-8 26-2-8 0-20 8-26z"/><path d="M18 14l4 8"/><path d="M4 33c3-2 5-2 8 0s5 2 8 0 5-2 8 0 5 2 6 1"/></svg>
+              <h3>Early<br>surf</h3>
+              <p>Surf the early tide.</p>
+            </article>
+            <article class="card">
+              <svg viewBox="0 0 38 38" aria-hidden="true"><path d="M19 6L4 32h30z"/><path d="M19 6v26"/><path d="M19 32l-5-9h10z"/><path d="M2 32h34"/></svg>
+              <h3>Open-air<br>camp</h3>
+              <p>Camp under open sky.</p>
+            </article>
+            <article class="card">
+              <svg viewBox="0 0 38 38" aria-hidden="true"><path d="M6 34L32 4"/><circle cx="13" cy="26" r="4"/><path d="M32 4v20"/><path d="M32 24c0 3-3 3-3 1"/></svg>
+              <h3>Rod and<br>reel</h3>
+              <p>Cast a line and reel.</p>
+            </article>
+            <article class="card">
+              <svg viewBox="0 0 38 38" aria-hidden="true"><circle cx="13" cy="12" r="5"/><circle cx="26" cy="13" r="4"/><path d="M4 32c0-7 4-11 9-11s9 4 9 11"/><path d="M22 22c1-1 2-2 4-2 4 0 8 3 8 10"/></svg>
+              <h3>Good<br>company</h3>
+              <p>Built for good company.</p>
+            </article>
+          </div>
+        </div>
+
+        <div class="band-pill">Coffee · Surf · Camp · Reel</div>
+      </div>
+
+      <div class="giant" id="giant">Good company</div>
+
+      <div class="cup" id="cup" aria-hidden="true">
+        <svg viewBox="0 0 300 260">
+          <defs>
+            <clipPath id="cupInside">
+              <path d="M46 44 H234 L216 188 Q211 209 188 209 H92 Q69 209 64 188 Z"/>
+            </clipPath>
+          </defs>
+          <!-- pour stream from above -->
+          <rect id="stream" x="134" y="-3000" width="12" height="3000" rx="6" fill="#6b3e26"/>
+          <!-- saucer -->
+          <ellipse cx="140" cy="232" rx="134" ry="18" fill="#fff" stroke="#24160f" stroke-width="6"/>
+          <!-- handle -->
+          <path d="M230 82 C292 78 292 166 220 168" fill="none" stroke="#24160f" stroke-width="16" stroke-linecap="round"/>
+          <path d="M230 82 C292 78 292 166 220 168" fill="none" stroke="#fff" stroke-width="5" stroke-linecap="round"/>
+          <!-- cup body -->
+          <path d="M40 40 H240 L220 190 Q214 215 188 215 H92 Q66 215 60 190 Z" fill="#fff" stroke="#24160f" stroke-width="6" stroke-linejoin="round"/>
+          <!-- coffee fill -->
+          <g clip-path="url(#cupInside)">
+            <rect id="coffee" x="0" y="215" width="300" height="200" fill="#6b3e26"/>
+            <ellipse id="crema" cx="140" cy="215" rx="110" ry="8" fill="#c99662"/>
+          </g>
+          <!-- steam -->
+          <g class="steam" id="steam" opacity="0">
+            <path d="M105 20 c-12 -18 12 -30 0 -48"/>
+            <path d="M140 14 c-12 -18 12 -30 0 -48"/>
+            <path d="M175 20 c-12 -18 12 -30 0 -48"/>
+          </g>
+        </svg>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== About ===== -->
+  <section class="about" id="about">
+    <div class="about-top">
+      <div>
+        <p class="eyebrow reveal">About us</p>
+        <h2 class="reveal">Slow mornings.<br>Salt air.<br><span class="c">Good company.</span></h2>
+        <svg class="badge reveal" viewBox="0 0 200 200" aria-hidden="true">
+          <defs><path id="circ" d="M100,100 m-75,0 a75,75 0 1,1 150,0 a75,75 0 1,1 -150,0"/></defs>
+          <g class="ring">
+            <text><textPath href="#circ" textLength="465">RADIATE MORNING CO. • COFFEE • SURF • CAMP • REEL •</textPath></text>
+          </g>
+          <circle cx="100" cy="100" r="22" fill="#d08a45"/>
+          <g stroke="#d08a45" stroke-width="3" stroke-linecap="round">
+            <path d="M100 64v-8M100 144v-8M64 100h-8M144 100h-8M75 75l-6-6M131 131l-6-6M75 125l-6 6M131 69l-6 6"/>
+          </g>
+        </svg>
+      </div>
+      <div class="about-copy">
+        <p class="reveal">RADiate Morning Co. started with a simple idea: the best part of the day is the first part, especially when it's shared.</p>
+        <p class="reveal">We pour coffee for people who catch the early tide, pitch a tent at the edge of the map and wait patiently for a bite on the line. Wherever your morning takes you, we'd like to be part of it.</p>
+        <a href="#" class="about-cta reveal">Come say hello</a>
+      </div>
+    </div>
+
+    <div class="rituals">
+      <div class="ritual reveal"><span class="num">01</span><h3>Coffee</h3><p>Brewed slow, poured strong.</p></div>
+      <div class="ritual reveal"><span class="num">02</span><h3>Surf</h3><p>Paddle out at first light.</p></div>
+      <div class="ritual reveal"><span class="num">03</span><h3>Camp</h3><p>Wake up somewhere wild.</p></div>
+      <div class="ritual reveal"><span class="num">04</span><h3>Reel</h3><p>Cast early, wait easy.</p></div>
+    </div>
+  </section>
+
+  <script>
+  // Fade-up reveal for the About section
+  (() => {
+    const items = document.querySelectorAll(".reveal");
+    if (!("IntersectionObserver" in window)) { items.forEach(el => el.classList.add("in")); return; }
+    const io = new IntersectionObserver((entries) => {
+      entries.forEach((e) => {
+        if (!e.isIntersecting) return;
+        const group = [...e.target.parentElement.querySelectorAll(":scope > .reveal")];
+        e.target.style.transitionDelay = (Math.max(0, group.indexOf(e.target)) * 0.12) + "s";
+        e.target.classList.add("in");
+        io.unobserve(e.target);
+      });
+    }, { threshold: 0.2 });
+    items.forEach(el => io.observe(el));
+  })();
+  </script>
+
+  <script>
+  (() => {
+    const A = 1.8; // viewports of scroll for the pour and pull-back
+
+    const root = document.documentElement;
+    const track = document.getElementById("track");
+    const scene = document.getElementById("scene");
+    const cup = document.getElementById("cup");
+    const giant = document.getElementById("giant");
+    const strip = document.getElementById("strip");
+    const stream = document.getElementById("stream");
+    const coffee = document.getElementById("coffee");
+    const crema = document.getElementById("crema");
+    const steam = document.getElementById("steam");
+    const cards = [...document.querySelectorAll(".card")];
+
+    const clamp = (x, a = 0, b = 1) => Math.min(b, Math.max(a, x));
+    const lerp = (a, b, t) => a + (b - a) * t;
+    const ease = (t) => t < .5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2;
+
+    let vw = 0, vh = 0, B = 1, stripW = 0, lettersW = 0, mobile = false, edgeFinal = 0;
+
+    function layout() {
+      vw = document.documentElement.clientWidth;
+      vh = scene.clientHeight || innerHeight;
+      mobile = vw < 768 || vw <= vh;
+      edgeFinal = (mobile ? 0.5 : 0.62) * vh;
+      stripW = strip.scrollWidth;
+      lettersW = giant.scrollWidth;
+      B = (stripW + 0.45 * vw) / vw * 1.1;
+      track.style.height = ((1 + A + B) * vh) + "px";
+      render(scrollY);
+    }
+
+    function render(y) {
+      const q = clamp(y / (A * vh));
+
+      // 1. Pour: coffee fills the cup
+      const fill = ease(clamp((q - 0.04) / 0.5));
+      const surface = 209 - fill * 150;          // coffee surface y in the cup's SVG
+      coffee.setAttribute("y", surface);
+      crema.setAttribute("cy", surface);
+      crema.setAttribute("opacity", fill > 0.02 ? 1 : 0);
+      const pouring = q > 0.02 && q < 0.56;
+      stream.setAttribute("height", pouring ? 3000 + surface : 0);
+
+      // 2. Pull back: cup shrinks onto the rising espresso band
+      const p = ease(clamp((q - 0.55) / 0.4));
+      const edge = lerp(vh + 2, edgeFinal, p);
+      root.style.setProperty("--edge-px", edge + "px");
+      const cupH = cup.offsetHeight;
+      const scale = lerp(mobile ? 1.35 : 1.5, 1, p);
+      const bottom = lerp(0.8 * vh, edgeFinal, p);
+      cup.style.transform = `translate(-50%, ${bottom - cupH}px) scale(${scale})`;
+      steam.setAttribute("opacity", clamp((q - 0.5) / 0.2));
+      root.style.setProperty("--ph", q >= 0.94 ? 1 : 0);
+
+      // 3. Strip and giant letters slide in
+      const r = clamp((y - A * vh) / (B * vh));
+      strip.style.transform = `translateX(${vw - r * (stripW + 0.45 * vw)}px)`;
+      giant.style.transform = `translate(${vw - r * (lettersW + vw)}px, -100%)`;
+
+      for (const c of cards) {
+        const left = c.getBoundingClientRect().left;
+        const s = clamp((0.98 - left / vw) / 0.3, -0.4, 1.6) * 100;
+        c.style.setProperty("--s", s + "%");
+      }
+    }
+
+    let lastY = -1;
+    function frame() {
+      const y = scrollY;
+      if (y !== lastY) { render(y); lastY = y; }
+      requestAnimationFrame(frame);
+    }
+
+    layout();
+    addEventListener("resize", layout);
+    if (document.fonts) document.fonts.ready.then(layout);
+    requestAnimationFrame(frame);
+  })();
+  </script>
+</body>
+</html>
